@@ -6,17 +6,18 @@
                 <el-input v-model="form.name" placeholder="用户名" />
             </el-form-item>
             <el-form-item prop="password">
-                <el-input v-model="form.password" placeholder="密码" />
+                <el-input v-model="form.password" placeholder="密码" type="password" />
             </el-form-item>
             <el-form-item>
                 <el-checkbox v-model="remeber" label="记住密码"></el-checkbox>
             </el-form-item>
         </el-form>
-        <el-button type="primary" style="display: block;width: 100%;">登录</el-button>
+        <el-button type="primary" style="display: block;width: 100%;" @click="toLogin">登录</el-button>
     </div>
 </template>
 
 <script>
+import { token } from '@/api/login'
 export default {
     data() {
         return{
@@ -30,6 +31,22 @@ export default {
                 ]
             },
             remeber: false,
+        }
+    },
+    methods: {
+        toLogin() {
+            this.$refs.form.validate(valid => {
+                window.console.log('valid: ', valid)
+                window.console.log('this: ', this);
+                if(valid) {
+                    // console.log('token(this.form): ', token(this.form))
+                    token(this.form).then(res => {
+                        console.log('res: ', res)
+                    }).then(err => {
+                        console.error(err);
+                    })
+                }
+            })
         }
     }
 }
